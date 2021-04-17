@@ -1,1 +1,1 @@
-# binance-trader
+# Trading Bot For Binance
