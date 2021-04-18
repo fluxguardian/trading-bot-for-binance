@@ -57,7 +57,7 @@ namespace TradingBotPrj.Application
             {
                 IEnumerable<OpenOrdersResponseModel> openOrdersResponse = binance.OpenOrders(s => s.ClientOrderId == buyorderResponse.ClientOrderId).Result;
 
-                if (openOrdersResponse?.Any() ?? false)
+                if (!openOrdersResponse?.Any() ?? true)
                 {
                     var sellorderRequest = new OrderRequestModel
                     {
