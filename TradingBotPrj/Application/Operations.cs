@@ -39,15 +39,22 @@ namespace TradingBotPrj.Application
 
                     var buyorderResponse = binance.NewOrder(buyorderRequest).Result;
 
-                    if (buyorderResponse?.OrderId > 0)
+                    if (buyorderResponse is ErrorModel)
                     {
-                        Console.WriteLine($"Order Type: BUY => Pair: {dynamicInfo.Symbol} => Price: {dynamicInfo.BuyPrice} => Quantity: {dynamicInfo.Quantity} => Date: {DateTime.Now}");
-                        Sell(buyorderResponse);
-                        break;
+                        var err = (ErrorModel)buyorderResponse;
+                        Console.WriteLine($"AN ERROR OCCURRED! Message: ({err.Code}) {err.Msg} => Order Type: BUY => Date: {DateTime.Now}");
                     }
+                    else
+                    {
+                        Console.WriteLine($"Order Type: BUY => Date: {DateTime.Now}");
+                        Thread.Sleep(2000);
+                        Sell(buyorderResponse);
+                    }
+
+                    break;
                 }
 
-                Thread.Sleep(2000);
+                Thread.Sleep(3000);
             }
         }
 
@@ -70,16 +77,22 @@ namespace TradingBotPrj.Application
 
                     var sellorderResponse = binance.NewOrder(sellorderRequest).Result;
 
-                    if (sellorderResponse?.OrderId > 0)
+                    if (sellorderResponse is ErrorModel)
                     {
-                        Console.WriteLine($"Order Type: SELL => Pair: {dynamicInfo.Symbol} => Price: {dynamicInfo.SellPrice} => Quantity: {dynamicInfo.Quantity} => Date: {DateTime.Now}");
+                        var err = (ErrorModel)sellorderResponse;
+                        Console.WriteLine($"AN ERROR OCCURRED! Message: ({err.Code}) {err.Msg} => Order Type: BUY => Date: {DateTime.Now}");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Order Type: SELL => Date: {DateTime.Now}");
                         Thread.Sleep(2000);
                         Buy();
-                        break;
                     }
+
+                    break;
                 }
 
-                Thread.Sleep(2000);
+                Thread.Sleep(3000);
             }
         }
     }

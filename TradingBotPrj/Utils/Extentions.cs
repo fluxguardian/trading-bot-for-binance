@@ -16,7 +16,7 @@ namespace TradingBotPrj.Utils
                 }
                 return default(T);
             }
-            catch
+            catch(Exception ex)
             {
                 return default(T);
             }

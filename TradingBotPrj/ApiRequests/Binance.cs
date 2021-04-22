@@ -21,7 +21,7 @@ namespace TradingBotPrj.ApiRequests
             this.httpClient.BaseAddress = new Uri(Settings.BaseEndpoint);
         }
 
-        public async Task<OpenOrdersResponseModel> NewOrder(OrderRequestModel orderParamater)
+        public async Task<dynamic> NewOrder(OrderRequestModel orderParamater)
         {
             var Parameters = new List<string>
             {
@@ -31,22 +31,20 @@ namespace TradingBotPrj.ApiRequests
                 $"newClientOrderId=sb_{Guid.NewGuid():N}"
             };
 
-            OrderType orderType = (OrderType)Enum.Parse(typeof(OrderType), orderParamater.Type);
+            Parameters.Add($"timeInForce={TimeInForce.GTC}");
 
-            Parameters.Add($"timeInForce={TimeInForce.GTC.ToString()}");
-
-            Parameters.Add($"quantity={orderParamater.Quantity.ToString()}");
-            Parameters.Add($"price={orderParamater.Price.ToString()}");
+            Parameters.Add($"quantity={orderParamater.Quantity}");
+            Parameters.Add($"price={orderParamater.Price}");
 
             var responseMessage = await CallAsync(httpClient, HttpMethod.Post, BinanceApiEndpoints.NewOrder, Parameters, true);
 
             if (responseMessage.IsSuccessStatusCode)
                 return JsonConvert.DeserializeObject<OpenOrdersResponseModel>(await responseMessage.Content.ReadAsStringAsync());
 
-            return null;
+            return JsonConvert.DeserializeObject<ErrorModel>(await responseMessage.Content.ReadAsStringAsync());
         }
 
-        public async Task<IEnumerable<OpenOrdersResponseModel>> OpenOrders(Expression<Func<OpenOrdersResponseModel, bool>> query = null)
+        public async Task<dynamic> OpenOrders(Expression<Func<OpenOrdersResponseModel, bool>> query = null)
         {
             var responseMessage = await CallAsync(httpClient, HttpMethod.Get, BinanceApiEndpoints.OpenOrders, null, true);
 
@@ -60,7 +58,7 @@ namespace TradingBotPrj.ApiRequests
                 return openOrders;
             }
 
-            return null;
+            return JsonConvert.DeserializeObject<ErrorModel>(await responseMessage.Content.ReadAsStringAsync());
         }
     }
 }
