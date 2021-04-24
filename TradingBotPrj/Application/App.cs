@@ -62,12 +62,12 @@ namespace TradingBotPrj.Application
 
             var confirm = Console.ReadKey();
 
-            if (confirm.KeyChar == 'n' || confirm.KeyChar == 'N')
+            if (confirm.KeyChar is 'n' or 'N')
             {
                 Console.WriteLine();
                 Run();
             }
-            else if (confirm.KeyChar == 'y' || confirm.KeyChar == 'Y')
+            else if (confirm.KeyChar is 'y' or 'Y')
             {
                 Console.WriteLine();
                 operations.Buy();
