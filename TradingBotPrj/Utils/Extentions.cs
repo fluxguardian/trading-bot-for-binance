@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace TradingBotPrj.Utils
 {
@@ -10,15 +9,11 @@ namespace TradingBotPrj.Utils
             try
             {
                 var converter = TypeDescriptor.GetConverter(typeof(T));
-                if (converter != null)
-                {
-                    return (T)converter.ConvertFromString(input);
-                }
-                return default(T);
+                return (T)converter.ConvertFromString(input);
             }
-            catch(Exception ex)
+            catch
             {
-                return default(T);
+                return default;
             }
         }
     }

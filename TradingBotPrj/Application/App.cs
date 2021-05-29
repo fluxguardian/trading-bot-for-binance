@@ -27,11 +27,9 @@ namespace TradingBotPrj.Application
                 Console.WriteLine("Please type buy price. Example: 0.001");
                 string buyPrice = Console.ReadLine();
                 var buyPriceDecimal = buyPrice.Convert<decimal>();
-                if (buyPriceDecimal > 0)
-                {
-                    dynamicInfo.BuyPrice = buyPriceDecimal;
-                    break;
-                }
+                if (buyPriceDecimal <= 0) continue;
+                dynamicInfo.BuyPrice = buyPriceDecimal;
+                break;
             }
 
             while (true)
@@ -39,11 +37,9 @@ namespace TradingBotPrj.Application
                 Console.WriteLine("Please type sell price. Example: 0.002");
                 string sellPrice = Console.ReadLine();
                 var sellPriceDecimal = sellPrice.Convert<decimal>();
-                if (sellPriceDecimal > 0)
-                {
-                    dynamicInfo.SellPrice = sellPriceDecimal;
-                    break;
-                }
+                if (sellPriceDecimal <= 0) continue;
+                dynamicInfo.SellPrice = sellPriceDecimal;
+                break;
             }
 
             while (true)
@@ -51,11 +47,9 @@ namespace TradingBotPrj.Application
                 Console.WriteLine("Please type quantity. Example: 314");
                 string quantity = Console.ReadLine();
                 var quantityDecimal = quantity.Convert<decimal>();
-                if (quantityDecimal > 0)
-                {
-                    dynamicInfo.Quantity = quantityDecimal;
-                    break;
-                }
+                if (quantityDecimal <= 0) continue;
+                dynamicInfo.Quantity = quantityDecimal;
+                break;
             }
 
             Console.WriteLine("Do you confirm that the operations will be started? (y/n)");
