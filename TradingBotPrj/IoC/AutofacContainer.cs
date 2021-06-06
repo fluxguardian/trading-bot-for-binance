@@ -14,7 +14,7 @@ namespace TradingBotPrj.IoC
         {
             var builder = new ContainerBuilder();
             builder.Register(c => new HttpClient()).As<HttpClient>();
-            builder.RegisterType<DynamicInfo>().InstancePerLifetimeScope();
+            builder.RegisterType<DynamicInfo>().As<IDynamicInfo>().InstancePerLifetimeScope();
             builder.RegisterType<Binance>().As<IBinance>().InstancePerLifetimeScope();
             builder.RegisterType<Operations>().As<IOperations>().InstancePerLifetimeScope();
             builder.RegisterType<App>().InstancePerLifetimeScope();

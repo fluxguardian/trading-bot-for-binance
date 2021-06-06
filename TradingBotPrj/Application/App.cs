@@ -1,16 +1,16 @@
 ﻿using System;
 using TradingBotPrj.Application.Interfaces;
 using TradingBotPrj.Infos;
-using TradingBotPrj.Utils;
+using TradingBotPrj.Helpers;
 
 namespace TradingBotPrj.Application
 {
     public class App
     {
         private readonly IOperations operations;
-        private readonly DynamicInfo dynamicInfo;
+        private readonly IDynamicInfo dynamicInfo;
 
-        public App(IOperations operations, DynamicInfo dynamicInfo)
+        public App(IOperations operations, IDynamicInfo dynamicInfo)
         {
             this.operations = operations;
             this.dynamicInfo = dynamicInfo;
@@ -19,13 +19,13 @@ namespace TradingBotPrj.Application
         public void Run()
         {
             Console.WriteLine("Please type a trading pair. Example: XVGBTC");
-            string pair = Console.ReadLine();
+            var pair = Console.ReadLine();
             dynamicInfo.Symbol = pair.ToUpper();
 
             while (true)
             {
                 Console.WriteLine("Please type buy price. Example: 0.001");
-                string buyPrice = Console.ReadLine();
+                var buyPrice = Console.ReadLine();
                 var buyPriceDecimal = buyPrice.Convert<decimal>();
                 if (buyPriceDecimal <= 0) continue;
                 dynamicInfo.BuyPrice = buyPriceDecimal;
@@ -35,7 +35,7 @@ namespace TradingBotPrj.Application
             while (true)
             {
                 Console.WriteLine("Please type sell price. Example: 0.002");
-                string sellPrice = Console.ReadLine();
+                var sellPrice = Console.ReadLine();
                 var sellPriceDecimal = sellPrice.Convert<decimal>();
                 if (sellPriceDecimal <= 0) continue;
                 dynamicInfo.SellPrice = sellPriceDecimal;
@@ -45,7 +45,7 @@ namespace TradingBotPrj.Application
             while (true)
             {
                 Console.WriteLine("Please type quantity. Example: 314");
-                string quantity = Console.ReadLine();
+                var quantity = Console.ReadLine();
                 var quantityDecimal = quantity.Convert<decimal>();
                 if (quantityDecimal <= 0) continue;
                 dynamicInfo.Quantity = quantityDecimal;

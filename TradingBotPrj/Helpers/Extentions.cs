@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace TradingBotPrj.Utils
+namespace TradingBotPrj.Helpers
 {
     public static class Extentions
     {
