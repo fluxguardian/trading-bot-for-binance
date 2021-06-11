@@ -1,20 +1,20 @@
-﻿using TradingBotPrj.Infos;
-using TradingBotPrj.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using TradingBotPrj.Application.Interfaces;
 using TradingBotPrj.ApiRequests.Interface;
+using TradingBotPrj.Application.Interfaces;
+using TradingBotPrj.Infos;
+using TradingBotPrj.Models;
 
 namespace TradingBotPrj.Application
 {
     public class Operations : IOperations
     {
         private readonly IBinance binance;
-        private readonly DynamicInfo dynamicInfo;
+        private readonly IDynamicInfo dynamicInfo;
 
-        public Operations(IBinance binance, DynamicInfo dynamicInfo)
+        public Operations(IBinance binance, IDynamicInfo dynamicInfo)
         {
             this.binance = binance;
             this.dynamicInfo = dynamicInfo;
@@ -24,7 +24,9 @@ namespace TradingBotPrj.Application
         {
             while (true)
             {
-                IEnumerable<OpenOrdersResponseModel> openOrdersResponse = binance.OpenOrders(s => s.ClientOrderId.StartsWith("sb_") && s.Symbol == dynamicInfo.Symbol).Result;
+                Thread.Sleep(2000);
+
+                IEnumerable<OpenOrdersResponseModel> openOrdersResponse = binance.OpenOrders(s => s.ClientOrderId.StartsWith("sb_") && s.Symbol == dynamicInfo.Symbol);
 
                 if (!openOrdersResponse?.Any() ?? true)
                 {
@@ -37,24 +39,20 @@ namespace TradingBotPrj.Application
                         Type = OrderType.LIMIT.ToString()
                     };
 
-                    var buyorderResponse = binance.NewOrder(buyorderRequest).Result;
+                    var buyorderResponse = binance.NewOrder(buyorderRequest);
 
-                    if (buyorderResponse is ErrorModel)
+                    if (buyorderResponse is ErrorModel err)
                     {
-                        var err = (ErrorModel)buyorderResponse;
                         Console.WriteLine($"AN ERROR OCCURRED! Message: ({err.Code}) {err.Msg} => Order Type: BUY => Date: {DateTime.Now}");
                     }
                     else
                     {
                         Console.WriteLine($"Order Type: BUY => Date: {DateTime.Now}");
-                        Thread.Sleep(2000);
                         Sell(buyorderResponse);
                     }
 
                     break;
                 }
-
-                Thread.Sleep(3000);
             }
         }
 
@@ -62,7 +60,9 @@ namespace TradingBotPrj.Application
         {
             while (true)
             {
-                IEnumerable<OpenOrdersResponseModel> openOrdersResponse = binance.OpenOrders(s => s.ClientOrderId == buyorderResponse.ClientOrderId).Result;
+                Thread.Sleep(2000);
+
+                IEnumerable<OpenOrdersResponseModel> openOrdersResponse = binance.OpenOrders(s => s.ClientOrderId == buyorderResponse.ClientOrderId);
 
                 if (!openOrdersResponse?.Any() ?? true)
                 {
@@ -75,24 +75,20 @@ namespace TradingBotPrj.Application
                         Type = OrderType.LIMIT.ToString()
                     };
 
-                    var sellorderResponse = binance.NewOrder(sellorderRequest).Result;
+                    var sellorderResponse = binance.NewOrder(sellorderRequest);
 
-                    if (sellorderResponse is ErrorModel)
+                    if (sellorderResponse is ErrorModel err)
                     {
-                        var err = (ErrorModel)sellorderResponse;
                         Console.WriteLine($"AN ERROR OCCURRED! Message: ({err.Code}) {err.Msg} => Order Type: BUY => Date: {DateTime.Now}");
                     }
                     else
                     {
                         Console.WriteLine($"Order Type: SELL => Date: {DateTime.Now}");
-                        Thread.Sleep(2000);
                         Buy();
                     }
 
                     break;
                 }
-
-                Thread.Sleep(3000);
             }
         }
     }

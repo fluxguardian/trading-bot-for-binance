@@ -1,9 +1,9 @@
-﻿using TradingBotPrj.Application;
-using Autofac;
+﻿using Autofac;
 using System.Net.Http;
-using TradingBotPrj.Application.Interfaces;
-using TradingBotPrj.ApiRequests.Interface;
 using TradingBotPrj.ApiRequests;
+using TradingBotPrj.ApiRequests.Interface;
+using TradingBotPrj.Application;
+using TradingBotPrj.Application.Interfaces;
 using TradingBotPrj.Infos;
 
 namespace TradingBotPrj.IoC

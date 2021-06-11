@@ -7,7 +7,9 @@ namespace TradingBotPrj.ApiRequests.Interface
 {
     public interface IBinance
     {
-        Task<dynamic> NewOrder(OrderRequestModel orderParamater);
-        Task<dynamic> OpenOrders(Expression<Func<OpenOrdersResponseModel, bool>> query = null);
+        dynamic NewOrder(OrderRequestModel orderParamater);
+        dynamic OpenOrders(Expression<Func<OpenOrdersResponseModel, bool>> query = null);
+        Task<dynamic> NewOrderAsync(OrderRequestModel orderParamater);
+        Task<dynamic> OpenOrdersAsync(Expression<Func<OpenOrdersResponseModel, bool>> query = null);
     }
 }

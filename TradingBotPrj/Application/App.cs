@@ -20,7 +20,7 @@ namespace TradingBotPrj.Application
         {
             Console.WriteLine("Please type a trading pair. Example: XVGBTC");
             var pair = Console.ReadLine();
-            dynamicInfo.Symbol = pair.ToUpper();
+            dynamicInfo.Symbol = pair.ToUpperInvariant();
 
             while (true)
             {

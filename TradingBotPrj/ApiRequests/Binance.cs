@@ -21,7 +21,17 @@ namespace TradingBotPrj.ApiRequests
             this.httpClient.BaseAddress = new Uri(Settings.BaseEndpoint);
         }
 
-        public async Task<dynamic> NewOrder(OrderRequestModel orderParamater)
+        public dynamic NewOrder(OrderRequestModel orderParamater)
+        {
+            return this.NewOrderAsync(orderParamater).Result;
+        }
+
+        public dynamic OpenOrders(Expression<Func<OpenOrdersResponseModel, bool>> query = null)
+        {
+            return this.OpenOrdersAsync(query).Result;
+        }
+
+        public async Task<dynamic> NewOrderAsync(OrderRequestModel orderParamater)
         {
             var Parameters = new List<string>
             {
@@ -44,7 +54,7 @@ namespace TradingBotPrj.ApiRequests
             return JsonConvert.DeserializeObject<ErrorModel>(await responseMessage.Content.ReadAsStringAsync());
         }
 
-        public async Task<dynamic> OpenOrders(Expression<Func<OpenOrdersResponseModel, bool>> query = null)
+        public async Task<dynamic> OpenOrdersAsync(Expression<Func<OpenOrdersResponseModel, bool>> query = null)
         {
             var responseMessage = await CallAsync(httpClient, HttpMethod.Get, BinanceApiEndpoints.OpenOrders, null, true);
 
